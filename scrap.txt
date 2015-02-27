@@ -1,0 +1,236 @@
+./make_world.exe 10 0.1 | ./step_world.exe 0.1 1
+
+
+./make_world.exe 100 0.1 | ./step_world.exe 0.1 10000 |./render_world dump1.bmp
+
+./make_world.exe 100 0.1 | ./step_world_v1_lambda.exe 0.1 1000 |./render_world dump.bmp
+
+./make_world 1000 0.1 1 > /tmp/world.bin 
+./make_world.exe 100 0.1 | ./step_world_v3_opencl.exe 0.1 1000 |./render_world dump3.bmp
+./make_world.exe 100 0.1 | ./step_world_v4_double_buffered.exe 0.1 1000 |./render_world dump4.bmp
+
+time (bin/make_world | ./step_world_v3_opencl 0.1 1 > /dev/null)
+
+
+time (./make_world 5000 0.1 1 | ./step_world 0.1 1000 1 > /dev/null)
+time (./make_world 5000 0.1 1 | ./step_world_v3_opencl 0.1 1000 1 > /dev/null)
+time (./make_world 5000 0.1 1 | ./step_world_v4_double_buffered 0.1 1000 1 > /dev/null)
+time (./make_world 5000 0.1 1 | ./step_world_v5_packed_properties 0.1 1000 1 > /dev/null)
+
+CMake .
+make all
+
+
+mart@Marts_laptop ~/hpce-2014-cw4-master
+$ time (./make_world 5000 0.1 1 | ./step_world_v5_packed_properties 0.1 1000 1 > /dev/null)
+Loaded world with w=5000, h=5000
+Stepping by dt=0.1 for n=1000
+Found 2 platforms
+  Platform 0 : Intel(R) Corporation
+  Platform 1 : NVIDIA Corporation
+Choosing platform 1
+Found 1 devices
+  Device 0 : GeForce GTX 870M
+Choosing device 0
+
+real    0m8.956s
+user    0m3.077s
+sys     0m5.342s
+
+mart@Marts_laptop ~/hpce-2014-cw4-master
+$
+time (./make_world 5000 0.1 1 | ./step_world_v4_double_buffered 0.1 1000 1 > /dev/null)
+mart@Marts_laptop ~/hpce-2014-cw4-master
+$ time (./make_world 5000 0.1 1 | ./step_world_v4_double_buffered 0.1 1000 1 > /dev/null)
+Loaded world with w=5000, h=5000
+Stepping by dt=0.1 for n=1000
+Found 2 platforms
+  Platform 0 : Intel(R) Corporation
+  Platform 1 : NVIDIA Corporation
+Choosing platform 1
+Found 1 devices
+  Device 0 : GeForce GTX 870M
+Choosing device 0
+
+real    0m12.541s
+user    0m2.421s
+sys     0m9.577s
+
+mart@Marts_laptop ~/hpce-2014-cw4-master
+$ time (./make_world 5000 0.1 1 | ./step_world_v3_opencl 0.1 1000 1 > /dev/null)
+Loaded world with w=5000, h=5000
+Stepping by dt=0.1 for n=1000
+Found 2 platforms
+  Platform 0 : Intel(R) Corporation
+  Platform 1 : NVIDIA Corporation
+Choosing platform 1
+Found 1 devices
+  Device 0 : GeForce GTX 870M
+Choosing device 0
+
+real    1m21.270s
+user    0m57.202s
+sys     0m23.155s
+
+mart@Marts_laptop ~/hpce-2014-cw4-master
+$ time (./make_world 5000 0.1 1 | ./step_world 0.1 1000 1 > /dev/null)
+Loaded world with w=5000, h=5000
+Stepping by dt=0.1 for n=1000
+
+real    18m19.004s
+user    17m43.265s
+sys     0m0.905s
+
+
+
+//////////////////////////////////////
+
+		if(myProps & 0x4) {
+			contrib += outer;
+			acc += outer * world_state[index-w];
+		}
+		
+		// Cell below
+		if(myProps & 0x8) {
+			contrib += outer;
+			acc += outer * world_state[index-w];
+		}
+		
+		// Cell left
+		if(myProps & 0x12) {
+			contrib += outer;
+			acc += outer * world_state[index-w];
+		}
+		
+		// Cell right
+		if(myProps & 0x16) {
+			contrib += outer;
+			acc += outer * world_state[index-w];
+		}
+		///////////////
+
+
+#include "heat.hpp"
+
+#include <stdexcept>
+#include <cmath>
+#include <cstdint>
+#include <memory>
+#include <cstdio>
+#include <string>
+
+namespace hpce{
+	namespace ml3411{
+		//! Create a square world with a standardised "slalom track"
+		void kernel_xy(uint32_t x, uint32_t y, uint32_t w,  const float *world_state) {
+			// This is our temporary working space
+				uint32_t index = y*w + x;
+
+				if ((world.properties[index] & Cell_Fixed) || (world.properties[index] & Cell_Insulator)){
+					// Do nothing, this cell never changes (e.g. a boundary, or an interior fixed-value heat-source)
+					buffer[index] = world.state[index];
+				}
+				else{
+					float contrib = inner;
+					float acc = inner*world.state[index];
+
+					// Cell above
+					if (!(world.properties[index - w] & Cell_Insulator)) {
+						contrib += outer;
+						acc += outer * world.state[index - w];
+					}
+
+					// Cell below
+					if (!(world.properties[index + w] & Cell_Insulator)) {
+						contrib += outer;
+						acc += outer * world.state[index + w];
+					}
+
+					// Cell left
+					if (!(world.properties[index - 1] & Cell_Insulator)) {
+						contrib += outer;
+						acc += outer * world.state[index - 1];
+					}
+
+					// Cell right
+					if (!(world.properties[index + 1] & Cell_Insulator)) {
+						contrib += outer;
+						acc += outer * world.state[index + 1];
+					}
+
+					// Scale the accumulate value by the number of places contributing to it
+					float res = acc / contrib;
+					// Then clamp to the range [0,1]
+					res = std::min(1.0f, std::max(0.0f, res));
+					buffer[index] = res;
+
+
+				} // end of if(insulator){ ... } else 
+			
+		}
+		void StepWorldV2Lambda(world_t &world, float dt, unsigned n)
+		{
+			uint32_t w = world.w, h = world.h;
+
+			float outer = world.alpha*dt;		// We spread alpha to other cells per time
+			float inner = 1 - outer / 4;				// Anything that doesn't spread stays
+
+			
+			std::vector<float> buffer(w*h);
+
+			for (unsigned t = 0; t < n; t++){
+				for (uint32_t y = 0; y < h; y++){
+					for (uint32_t x = 0; x<w; x++){
+						hpce::ml3411::kernel_xy(x, y, w, inner, outer, &world.state[0], (const uint32_t*)&world.properties[0], &buffer[0]);
+					} 
+				}  // end of for(x...
+				// end of for(y...
+
+				// All cells have now been calculated and placed in buffer, so we replace
+				// the old state with the new state
+				std::swap(world.state, buffer);
+				// Swapping rather than assigning is cheaper: just a pointer swap
+				// rather than a memcpy, so O(1) rather than O(w*h)
+
+				world.t += dt; // We have moved the world forwards in time
+
+			} // end of for(t...
+		}
+
+		}
+}; // namepspace hpce
+
+
+int main(int argc, char *argv[])
+{
+	float dt = 0.1;
+	unsigned n = 1;
+	bool binary = false;
+
+	if (argc>1){
+		dt = (float)strtod(argv[1], NULL);
+	}
+	if (argc>2){
+		n = atoi(argv[2]);
+	}
+	if (argc>3){
+		if (atoi(argv[3]))
+			binary = true;
+	}
+
+	try{
+		hpce::world_t world = hpce::LoadWorld(std::cin);
+		std::cerr << "Loaded world with w=" << world.w << ", h=" << world.h << std::endl;
+
+		std::cerr << "Stepping by dt=" << dt << " for n=" << n << std::endl;
+		hpce::ml3411::StepWorldV2Lambda(world, dt, n);
+
+		hpce::SaveWorld(std::cout, world, binary);
+	}
+	catch (const std::exception &e){
+		std::cerr << "Exception : " << e.what() << std::endl;
+		return 1;
+	}
+
+	return 0;
+}

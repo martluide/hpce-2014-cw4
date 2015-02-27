@@ -1,0 +1,52 @@
+$ time (./make_world 5000 0.1 1 | ./step_world 0.1 1000 1 > /dev/null)
+Loaded world with w=5000, h=5000
+Stepping by dt=0.1 for n=1000
+
+real    18m19.004s
+user    17m43.265s
+sys     0m0.905s
+
+$ time (./make_world 5000 0.1 1 | ./step_world_v3_opencl 0.1 1000 1 > /dev/null)
+Loaded world with w=5000, h=5000
+Stepping by dt=0.1 for n=1000
+Found 2 platforms
+  Platform 0 : Intel(R) Corporation
+  Platform 1 : NVIDIA Corporation
+Choosing platform 1
+Found 1 devices
+  Device 0 : GeForce GTX 870M
+Choosing device 0
+
+real    1m21.270s
+user    0m57.202s
+sys     0m23.155s
+
+$ time (./make_world 5000 0.1 1 | ./step_world_v4_double_buffered 0.1 1000 1 > /dev/null)
+Loaded world with w=5000, h=5000
+Stepping by dt=0.1 for n=1000
+Found 2 platforms
+  Platform 0 : Intel(R) Corporation
+  Platform 1 : NVIDIA Corporation
+Choosing platform 1
+Found 1 devices
+  Device 0 : GeForce GTX 870M
+Choosing device 0
+
+real    0m12.541s
+user    0m2.421s
+sys     0m9.577s
+
+$ time (./make_world 5000 0.1 1 | ./step_world_v5_packed_properties 0.1 1000 1 > /dev/null)
+Loaded world with w=5000, h=5000
+Stepping by dt=0.1 for n=1000
+Found 2 platforms
+  Platform 0 : Intel(R) Corporation
+  Platform 1 : NVIDIA Corporation
+Choosing platform 1
+Found 1 devices
+  Device 0 : GeForce GTX 870M
+Choosing device 0
+
+real    0m8.956s
+user    0m3.077s
+sys     0m5.342s
