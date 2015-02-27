@@ -1,0 +1,1 @@
+/usr/bin/c++.exe  -Wall -std=c++11 -o2  -Wl,--enable-auto-import  CMakeFiles/make_world.dir/src/heat.cpp.o CMakeFiles/make_world.dir/src/make_world.cpp.o  -o make_world.exe -Wl,--out-implib,libmake_world.dll.a -Wl,--major-image-version,0,--minor-image-version,0  opencl_sdk//lib/cygwin/x86_64/libOpenCL.a 

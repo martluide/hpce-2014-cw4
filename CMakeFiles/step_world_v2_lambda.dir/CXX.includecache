@@ -1,0 +1,40 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/mart/hpce-2014-cw4-master/src/ml3411/step_world_v2_lambda.cpp
+heat.hpp
+/home/mart/hpce-2014-cw4-master/src/ml3411/heat.hpp
+stdexcept
+-
+cmath
+-
+cstdint
+-
+memory
+-
+cstdio
+-
+string
+-
+
+include/heat.hpp
+vector
+-
+iostream
+-
+cstdio
+-
+cstdlib
+-
+cstdint
+-
+algorithm
+-
+string
+-
+

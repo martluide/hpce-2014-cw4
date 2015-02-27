@@ -1,0 +1,1 @@
+/usr/bin/c++.exe  -Wall -std=c++11 -o2  -Wl,--enable-auto-import  CMakeFiles/render_world.dir/src/heat.cpp.o CMakeFiles/render_world.dir/src/render_world.cpp.o  -o render_world.exe -Wl,--out-implib,librender_world.dll.a -Wl,--major-image-version,0,--minor-image-version,0  opencl_sdk//lib/cygwin/x86_64/libOpenCL.a 

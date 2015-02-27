@@ -1,0 +1,46 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/mart/hpce-2014-cw4-master/src/heat.cpp
+heat.hpp
+/home/mart/hpce-2014-cw4-master/src/heat.hpp
+stdexcept
+-
+cmath
+-
+cstdint
+-
+memory
+-
+cstdio
+-
+string
+-
+
+/home/mart/hpce-2014-cw4-master/src/make_world.cpp
+heat.hpp
+/home/mart/hpce-2014-cw4-master/src/heat.hpp
+cstdlib
+-
+
+include/heat.hpp
+vector
+-
+iostream
+-
+cstdio
+-
+cstdlib
+-
+cstdint
+-
+algorithm
+-
+string
+-
+
