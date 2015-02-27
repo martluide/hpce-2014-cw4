@@ -1,0 +1,30 @@
+﻿Build started 18/02/2015 16:55:24.
+     1>Project "C:\cygwin64\home\mart\hpce-2014-cw4-master\bin\step_world.vcxproj" on node 4 (Build target(s)).
+     1>CustomBuild:
+         Building Custom Rule C:/cygwin64/home/mart/hpce-2014-cw4-master/CMakeLists.txt
+         CMake does not need to re-run because C:\cygwin64\home\mart\hpce-2014-cw4-master\bin\CMakeFiles\generate.stamp is up-to-date.
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /I"C:\cygwin64\home\mart\hpce-2014-cw4-master\include" /I"C:\cygwin64\home\mart\hpce-2014-cw4-master\opencl_sdk\include" /Zi /nologo /W3 /WX- /Od /Ob0 /D WIN32 /D _WINDOWS /D _DEBUG /D "CMAKE_INTDIR=\"Debug\"" /D _MBCS /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /GR /Fo"step_world.dir\Debug\\" /Fd"step_world.dir\Debug\vc120.pdb" /Gd /TP /errorReport:prompt  /EHsc";"-Wall -std=c++11 -o2 "C:\cygwin64\home\mart\hpce-2014-cw4-master\src\heat.cpp" "C:\cygwin64\home\mart\hpce-2014-cw4-master\src\step_world.cpp"
+     1>cl : Command line warning D9025: overriding '/EHs' with '/EHa'
+     1>cl : Command line warning D9035: option 'o' has been deprecated and will be removed in a future release
+     1>cl : Command line warning D9002: ignoring unknown option '/EH;'
+     1>cl : Command line warning D9002: ignoring unknown option '/EH-'
+     1>cl : Command line warning D9002: ignoring unknown option '/EHW'
+     1>cl : Command line warning D9002: ignoring unknown option '/EHl'
+     1>cl : Command line warning D9002: ignoring unknown option '/EHl'
+     1>cl : Command line warning D9002: ignoring unknown option '-std=c++11'
+         heat.cpp
+     1>C:\cygwin64\home\mart\hpce-2014-cw4-master\src\heat.cpp(273): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(211) : see declaration of 'fopen'
+         step_world.cpp
+     1>C:\cygwin64\home\mart\hpce-2014-cw4-master\src\step_world.cpp(7): warning C4305: 'initializing' : truncation from 'double' to 'float'
+         Generating Code...
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\cygwin64\home\mart\hpce-2014-cw4-master\bin\Debug\step_world.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib ..\opencl_sdk\\lib\windows\x86_64\OpenCL.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/cygwin64/home/mart/hpce-2014-cw4-master/bin/Debug/step_world.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/cygwin64/home/mart/hpce-2014-cw4-master/bin/Debug/step_world.lib" /MACHINE:X64  /machine:x64 /debug step_world.dir\Debug\heat.obj
+         step_world.dir\Debug\step_world.obj
+         step_world.vcxproj -> C:\cygwin64\home\mart\hpce-2014-cw4-master\bin\Debug\step_world.exe
+     1>Done Building Project "C:\cygwin64\home\mart\hpce-2014-cw4-master\bin\step_world.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:01.76

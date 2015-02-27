@@ -1,0 +1,10 @@
+﻿Build started 18/02/2015 16:55:24.
+     1>Project "C:\cygwin64\home\mart\hpce-2014-cw4-master\bin\ZERO_CHECK.vcxproj" on node 2 (Build target(s)).
+     1>CustomBuild:
+         Checking Build System
+         CMake does not need to re-run because C:/cygwin64/home/mart/hpce-2014-cw4-master/bin/CMakeFiles/generate.stamp is up-to-date.
+     1>Done Building Project "C:\cygwin64\home\mart\hpce-2014-cw4-master\bin\ZERO_CHECK.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:00.05
